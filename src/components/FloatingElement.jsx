@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 
 /**
  * FloatingElement provides continuous, asynchronous vertical levitation
- * to emulate zero-gravity physics.
+ * to emulate zero-gravity physics with staggered durations.
  */
 export default function FloatingElement({
   children,
-  duration = 4,
-  distance = 12,
+  duration = 4.2,
+  distance = 6,
   delay = 0,
-  rotateRange = 2,
+  rotateRange = 1.2,
   className = '',
   style = {},
   ...props
@@ -19,12 +19,12 @@ export default function FloatingElement({
     <motion.div
       animate={{
         y: [-distance, distance, -distance],
-        rotate: [-rotateRange, rotateRange, -rotateRange],
+        rotate: rotateRange ? [-rotateRange, rotateRange, -rotateRange] : 0,
       }}
       transition={{
         duration: duration,
         repeat: Infinity,
-        repeatType: 'reverse',
+        repeatType: 'mirror',
         ease: 'easeInOut',
         delay: delay,
       }}

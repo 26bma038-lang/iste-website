@@ -1,125 +1,152 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, MapPin, Trophy, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
+import { 
+  X, 
+  Calendar, 
+  MapPin, 
+  Trophy, 
+  Sparkles, 
+  CheckCircle2, 
+  Terminal 
+} from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { sound } from '../utils/audio';
+import MagneticButton from './MagneticButton';
 
 export default function EventModal({ event, onClose, onOpenJoinModal }) {
   if (!event) return null;
 
   const handleRegisterInterest = () => {
+    sound.playInitiate();
     confetti({
-      particleCount: 60,
-      spread: 60,
+      particleCount: 80,
+      spread: 70,
       origin: { y: 0.6 },
-      colors: ['#00f2fe', '#8b5cf6', '#ffffff']
+      colors: ['#00f0ff', '#8a2be2', '#ffffff', '#ff4655'],
     });
-    alert(`Interest recorded for ${event.title}! You will be redirected to the team channel.`);
-    onClose();
+
+    setTimeout(() => {
+      onClose();
+      onOpenJoinModal();
+    }, 450);
   };
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
-          className="fixed inset-0 bg-black/80 backdrop-blur-md"
+          onClick={() => {
+            sound.playClick();
+            onClose();
+          }}
+          className="fixed inset-0 bg-black/85 backdrop-blur-xl"
         />
 
         {/* Modal Window */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          initial={{ opacity: 0, scale: 0.94, y: 25 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-2xl glass-panel-elevated rounded-3xl p-6 sm:p-8 border border-cyan-500/30 shadow-[0_25px_60px_rgba(0,0,0,0.8)] z-10 max-h-[90vh] overflow-y-auto"
+          exit={{ opacity: 0, scale: 0.94, y: 20 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 320 }}
+          className="relative w-full max-w-2xl glass-visor-elevated rounded-3xl p-6 sm:p-8 border border-cyan-400/40 shadow-[0_0_60px_rgba(0,240,255,0.25)] z-10 max-h-[92vh] overflow-y-auto no-scrollbar"
         >
           {/* Close Button */}
           <button
-            onClick={onClose}
+            onClick={() => {
+              sound.playClick();
+              onClose();
+            }}
             className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            aria-label="Close"
           >
             <X className="w-5 h-5" />
           </button>
 
-          {/* Badge & Category */}
-          <div className="flex items-center gap-2 mb-4">
-            <span className={`text-[11px] font-mono font-semibold px-3 py-1 rounded-full uppercase tracking-wider bg-gradient-to-r ${event.accentColor} text-white`}>
-              {event.badge}
+          {/* Tactical Status Pill */}
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <span className="font-mono text-[10px] text-cyan-400 uppercase tracking-widest px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 flex items-center gap-1.5">
+              <Terminal className="w-3.5 h-3.5" />
+              EVENT_DOSSIER // {event.id?.toUpperCase()}
             </span>
-            <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-white/[0.05] text-slate-300 border border-white/10">
-              {event.type}
+            <span className="font-mono text-[10px] text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-400/30">
+              {event.status || 'VERIFIED'}
             </span>
           </div>
 
           {/* Title */}
-          <h3 className="font-heading font-extrabold text-2xl sm:text-3xl text-white mb-3">
+          <h2 className="font-extended font-bold text-2xl sm:text-3xl text-white mb-2">
             {event.title}
-          </h3>
+          </h2>
+
+          {/* Quick Metrics Banner */}
+          <div className="flex flex-wrap gap-4 py-3 my-4 border-y border-white/10 text-xs font-mono text-slate-300">
+            <div className="flex items-center gap-1.5 text-amber-400">
+              <Trophy className="w-4 h-4 text-amber-400 shrink-0" />
+              <span>{event.prize}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Calendar className="w-4 h-4 text-cyan-400 shrink-0" />
+              <span>{event.date}</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-slate-400">
+              <MapPin className="w-4 h-4 text-purple-400 shrink-0" />
+              <span>{event.location}</span>
+            </div>
+          </div>
 
           {/* Description */}
-          <p className="text-sm text-slate-300 font-light leading-relaxed mb-6">
-            {event.description}
-          </p>
-
-          {/* Metadata Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-            <div className="glass-panel p-3.5 rounded-xl border border-white/10">
-              <div className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest flex items-center gap-1.5 mb-1">
-                <Calendar className="w-3.5 h-3.5" /> Date / Window
-              </div>
-              <div className="text-xs font-semibold text-white">{event.date}</div>
-            </div>
-
-            <div className="glass-panel p-3.5 rounded-xl border border-white/10">
-              <div className="text-[10px] font-mono text-purple-400 uppercase tracking-widest flex items-center gap-1.5 mb-1">
-                <MapPin className="w-3.5 h-3.5" /> Location
-              </div>
-              <div className="text-xs font-semibold text-white">{event.location}</div>
-            </div>
-
-            <div className="glass-panel p-3.5 rounded-xl border border-white/10">
-              <div className="text-[10px] font-mono text-amber-400 uppercase tracking-widest flex items-center gap-1.5 mb-1">
-                <Trophy className="w-3.5 h-3.5" /> Rewards
-              </div>
-              <div className="text-xs font-semibold text-amber-300">{event.prize}</div>
-            </div>
+          <div className="mb-6">
+            <h4 className="text-xs font-mono text-cyan-400 uppercase tracking-wider mb-2">
+              Mission Directive & Scope
+            </h4>
+            <p className="text-sm text-slate-200 font-light leading-relaxed">
+              {event.description}
+            </p>
           </div>
 
           {/* Highlights */}
-          <div className="mb-8">
-            <h4 className="font-heading font-bold text-sm text-white mb-3 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-cyan-400" />
-              Event Highlights & Protocols:
-            </h4>
-            <ul className="space-y-2.5">
-              {event.highlights.map((highlight, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
-                  <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-                  <span>{highlight}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {event.highlights && (
+            <div className="mb-8">
+              <h4 className="text-xs font-mono text-purple-400 uppercase tracking-wider mb-3">
+                Key Protocol Highlights
+              </h4>
+              <div className="grid grid-cols-1 gap-2.5">
+                {event.highlights.map((h, i) => (
+                  <div
+                    key={i}
+                    className="glass-visor p-3 rounded-xl border border-white/5 flex items-start gap-2.5 text-xs font-mono text-slate-300"
+                  >
+                    <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                    <span>{h}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-          {/* Modal Actions */}
-          <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-white/10">
-            <button
+          {/* Footer Actions */}
+          <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+            <MagneticButton
               onClick={handleRegisterInterest}
-              className="w-full sm:flex-1 py-3 px-6 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-300 to-cyan-300 text-slate-950 font-bold text-sm shadow-[0_0_20px_rgba(0,242,254,0.35)] hover:scale-102 transition-all cursor-pointer flex items-center justify-center gap-2"
+              strength={0.2}
+              className="w-full sm:flex-1 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-300 to-cyan-400 text-slate-950 font-extended font-bold text-xs tracking-wider shadow-[0_0_20px_rgba(0,240,255,0.4)] flex items-center justify-center gap-2"
             >
-              <span>Confirm Registration / Interest</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+              <Sparkles className="w-4 h-4 text-slate-950" />
+              <span>TRANSMIT PARTICIPATION REQUEST</span>
+            </MagneticButton>
 
             <button
-              onClick={onClose}
-              className="w-full sm:w-auto py-3 px-5 rounded-xl glass-panel text-slate-300 hover:text-white border border-white/10 text-sm font-medium transition-colors cursor-pointer"
+              onClick={() => {
+                sound.playClick();
+                onClose();
+              }}
+              className="w-full sm:w-auto px-5 py-3.5 rounded-xl glass-visor hover:bg-white/[0.08] text-slate-300 font-mono text-xs border border-white/10 transition-colors"
             >
-              Close
+              Dismiss
             </button>
           </div>
         </motion.div>

@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   Compass, 
   Sparkles, 
   RotateCcw, 
   Zap, 
-  Cpu, 
-  Globe, 
-  Atom, 
-  Layers, 
-  ShieldCheck 
+  Atom 
 } from 'lucide-react';
 import FloatingElement from './FloatingElement';
 
@@ -156,8 +152,8 @@ export default function GravitySandbox({ currentMode, setGravityMode, gravityMul
               whileDrag={{ scale: 1.15, cursor: 'grabbing' }}
               onDragStart={() => setDraggedCount(prev => prev + 1)}
               initial={{ 
-                x: orb.initialX + (pulseKey % 2 === 0 ? 0 : (Math.random() - 0.5) * 80), 
-                y: orb.initialY + (pulseKey % 2 === 0 ? 0 : (Math.random() - 0.5) * 80),
+                x: orb.initialX + (pulseKey % 2 === 0 ? 0 : (index % 2 === 0 ? 25 : -25)), 
+                y: orb.initialY + (pulseKey % 2 === 0 ? 0 : (index % 3 === 0 ? 20 : -20)),
                 scale: 0.8,
                 opacity: 0
               }}

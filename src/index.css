@@ -3,13 +3,15 @@
 @layer base {
   :root {
     --font-heading: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-extended: 'Syncopate', sans-serif;
+    --font-tactical: 'Rajdhani', sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
   }
 
   body {
     font-family: var(--font-body);
-    background-color: #05070f;
+    background-color: #030305;
     color: #f1f5f9;
     overflow-x: hidden;
   }
@@ -18,105 +20,218 @@
     font-family: var(--font-heading);
   }
 
+  .font-extended {
+    font-family: var(--font-extended);
+    letter-spacing: 0.12em;
+  }
+
+  .font-tactical {
+    font-family: var(--font-tactical);
+    letter-spacing: 0.05em;
+  }
+
   code, pre, .font-mono {
     font-family: var(--font-mono);
   }
 }
 
-/* Glassmorphism & Anti-Gravity Visual Accents */
-.glass-panel {
-  background: rgba(13, 19, 33, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.glass-panel-elevated {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(10, 15, 29, 0.7);
+/* Spacesuit Visor Effect & Tactical Glassmorphism */
+.glass-visor {
+  background: rgba(3, 3, 5, 0.65);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.glass-visor-elevated {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.015) 100%), rgba(5, 5, 10, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-.glass-pill {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.glass-visor-cyan {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.07) 0%, rgba(3, 3, 5, 0.75) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  box-shadow: 0 0 30px -5px rgba(0, 240, 255, 0.15);
 }
 
-.neon-border-cyan {
-  box-shadow: 0 0 20px -3px rgba(0, 242, 254, 0.35);
-  border-color: rgba(0, 242, 254, 0.4);
+.glass-visor-purple {
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.07) 0%, rgba(3, 3, 5, 0.75) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(138, 43, 226, 0.25);
+  box-shadow: 0 0 30px -5px rgba(138, 43, 226, 0.15);
 }
 
-.neon-border-purple {
-  box-shadow: 0 0 20px -3px rgba(168, 85, 247, 0.35);
-  border-color: rgba(168, 85, 247, 0.4);
+.glass-visor-crimson {
+  background: linear-gradient(135deg, rgba(255, 70, 85, 0.08) 0%, rgba(3, 3, 5, 0.75) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 70, 85, 0.3);
+  box-shadow: 0 0 30px -5px rgba(255, 70, 85, 0.2);
 }
 
-.neon-border-orange {
-  box-shadow: 0 0 20px -3px rgba(249, 115, 22, 0.35);
-  border-color: rgba(249, 115, 22, 0.4);
+/* Tactical Beveled Corners (Chamfers) */
+.tactical-beveled {
+  clip-path: polygon(
+    0 12px,
+    12px 0,
+    100% 0,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    0 100%
+  );
 }
 
-/* Background Cosmic Grid & Particle Mesh */
+.tactical-beveled-sm {
+  clip-path: polygon(
+    0 8px,
+    8px 0,
+    100% 0,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    0 100%
+  );
+}
+
+/* Glowing Neon Accents */
+.neon-glow-cyan {
+  box-shadow: 0 0 25px -2px rgba(0, 240, 255, 0.45);
+}
+
+.neon-glow-purple {
+  box-shadow: 0 0 25px -2px rgba(138, 43, 226, 0.45);
+}
+
+.neon-glow-crimson {
+  box-shadow: 0 0 25px -2px rgba(255, 70, 85, 0.45);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.65), 0 0 40px rgba(0, 240, 255, 0.3);
+}
+
+.text-glow-purple {
+  text-shadow: 0 0 20px rgba(138, 43, 226, 0.65), 0 0 40px rgba(138, 43, 226, 0.3);
+}
+
+.text-glow-crimson {
+  text-shadow: 0 0 20px rgba(255, 70, 85, 0.65), 0 0 40px rgba(255, 70, 85, 0.3);
+}
+
+/* Scanning Laser Line */
+@keyframes laser-sweep {
+  0% {
+    top: -5%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  100% {
+    top: 105%;
+    opacity: 0;
+  }
+}
+
+.animate-laser {
+  animation: laser-sweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Deep Space Grid with Micro Crosshairs */
 .space-grid-bg {
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 80% 60%, rgba(139, 92, 246, 0.1) 0%, transparent 45%),
-    radial-gradient(circle at 20% 80%, rgba(249, 115, 22, 0.07) 0%, transparent 40%),
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    radial-gradient(circle at 50% 10%, rgba(0, 240, 255, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 85% 65%, rgba(138, 43, 226, 0.07) 0%, transparent 50%),
+    radial-gradient(circle at 15% 85%, rgba(255, 70, 85, 0.05) 0%, transparent 45%),
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
 }
 
-/* Custom Scrollbar */
+/* Pulsing Zero-G Neon Tether */
+@keyframes tether-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4), 0 0 30px rgba(0, 240, 255, 0.2);
+    opacity: 0.8;
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(138, 43, 226, 0.6), 0 0 50px rgba(138, 43, 226, 0.3);
+    opacity: 1;
+  }
+}
+
+.animate-tether {
+  animation: tether-pulse 3s ease-in-out infinite;
+}
+
+/* Animated Data Stream Flow */
+@keyframes data-stream {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+}
+
+.data-stream-wire {
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    rgba(0, 240, 255, 0.2) 20%, 
+    rgba(0, 240, 255, 0.9) 50%, 
+    rgba(138, 43, 226, 0.8) 80%, 
+    transparent 100%
+  );
+  background-size: 100% 200%;
+  animation: data-stream 2.5s linear infinite;
+}
+
+/* 3D Tesseract Slow Rotation */
+@keyframes rotate-tesseract {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  }
+}
+
+.animate-tesseract {
+  animation: rotate-tesseract 24s linear infinite;
+}
+
+/* Custom Tactical Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #05070f;
+  background: #030305;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(0, 242, 254, 0.5), rgba(139, 92, 246, 0.5));
+  background: linear-gradient(180deg, #00f0ff 0%, #8a2be2 100%);
   border-radius: 9999px;
-  border: 2px solid #05070f;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #00f2fe, #a855f7);
+  background: linear-gradient(180deg, #00f0ff 0%, #ff4655 100%);
 }
 
-/* Shimmer animation */
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+/* Hide scrollbar utility for horizontal scroll tracks */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-
-.animate-shimmer {
-  animation: shimmer 2.5s infinite;
-}
-
-/* Orbital rotation for footer and hero floating spheres */
-@keyframes orbit-slow {
-  from { transform: rotate(0deg) translateX(36px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(36px) rotate(-360deg); }
-}
-
-.animate-orbit {
-  animation: orbit-slow 12s linear infinite;
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 4s ease-in-out infinite;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

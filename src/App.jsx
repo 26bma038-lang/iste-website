@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
+import ParticleCanvas from './components/ParticleCanvas';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import About from './components/About';
-import Events from './components/Events';
+import MissionBriefing from './components/MissionBriefing';
+import TelemetryStats from './components/TelemetryStats';
+import ActiveOrbit from './components/ActiveOrbit';
+import FlightPath from './components/FlightPath';
+import AgentRoster from './components/AgentRoster';
 import GravitySandbox from './components/GravitySandbox';
 import SocialsFooter from './components/SocialsFooter';
 import EventModal from './components/EventModal';
 import JoinModal from './components/JoinModal';
-import { Compass, Sparkles } from 'lucide-react';
+import { Compass } from 'lucide-react';
+import { sound } from './utils/audio';
 
 const MODE_MULTIPLIERS = {
   zero: 0.65,
@@ -17,58 +22,68 @@ const MODE_MULTIPLIERS = {
 };
 
 export default function App() {
-  const [gravityMode, setGravityMode] = useState('moon');
+  const [gravityMode, setGravityMode] = useState('zero');
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [joinModalOpen, setJoinModalOpen] = useState(false);
+  const [initiateModalOpen, setInitiateModalOpen] = useState(false);
 
   const gravityMultiplier = MODE_MULTIPLIERS[gravityMode] || 1.0;
 
   const handleToggleGravity = () => {
+    sound.playClick();
     const modes = ['zero', 'moon', 'mars', 'warp'];
     const nextIdx = (modes.indexOf(gravityMode) + 1) % modes.length;
     setGravityMode(modes[nextIdx]);
   };
 
   return (
-    <div className="relative min-h-screen bg-[#05070f] text-slate-100 overflow-x-hidden space-grid-bg">
-      {/* Background Star / Tech Dust Sparkles */}
-      <div className="pointer-events-none fixed inset-0 z-0 opacity-40">
-        <div className="absolute top-[15%] left-[20%] w-1.5 h-1.5 rounded-full bg-cyan-400 blur-[0.5px] animate-pulse" />
-        <div className="absolute top-[35%] right-[25%] w-1 h-1 rounded-full bg-fuchsia-400 blur-[0.5px] animate-ping" style={{ animationDuration: '3s' }} />
-        <div className="absolute top-[60%] left-[10%] w-2 h-2 rounded-full bg-blue-400 blur-[1px] animate-pulse" />
-        <div className="absolute top-[80%] right-[15%] w-1.5 h-1.5 rounded-full bg-amber-400 blur-[0.5px] animate-ping" style={{ animationDuration: '4s' }} />
-        <div className="absolute top-[45%] left-[45%] w-1 h-1 rounded-full bg-cyan-300 blur-[0.5px]" />
-      </div>
+    <div className="relative min-h-screen bg-[#030305] text-slate-100 overflow-x-hidden space-grid-bg selection:bg-cyan-500/30 selection:text-cyan-200">
+      {/* 1. Interactive Zero-G Stardust & Data Node Canvas */}
+      <ParticleCanvas />
 
-      {/* Floating Header */}
+      {/* 2. The Orbital HUD (Floating Detached Pill Navbar) */}
       <Navbar
-        onOpenJoinModal={() => setJoinModalOpen(true)}
+        onOpenInitiateModal={() => setInitiateModalOpen(true)}
         gravityMode={gravityMode}
         onToggleGravity={handleToggleGravity}
       />
 
-      {/* Main Semantic Content */}
+      {/* Main Semantic Architecture */}
       <main className="relative z-10">
-        {/* Dramatic Zero-G Hero Section */}
+        {/* Section 1: The Launchpad (Hero with 3D Mouse Tilt Typography & Floating Geometries) */}
         <Hero
-          onOpenJoinModal={() => setJoinModalOpen(true)}
+          onOpenInitiateModal={() => setInitiateModalOpen(true)}
           gravityMultiplier={gravityMultiplier}
         />
 
-        {/* Asymmetrical Floating About Us Grid */}
-        <About
-          onOpenJoinModal={() => setJoinModalOpen(true)}
+        {/* Section 2: Mission Briefing (System Override Terminal with Asymmetrical Floating Cards) */}
+        <MissionBriefing
+          onOpenInitiateModal={() => setInitiateModalOpen(true)}
           gravityMultiplier={gravityMultiplier}
         />
 
-        {/* Flagship Initiatives & Events */}
-        <Events
+        {/* Section 3: Telemetry & High Scores (Stats Grid with Rapid Count-Up & Scanning Laser Line) */}
+        <TelemetryStats
+          gravityMultiplier={gravityMultiplier}
+        />
+
+        {/* Section 4: Active Orbit (Horizontally Scrolling Track of Levitating Domain Cards) */}
+        <ActiveOrbit
+          onOpenInitiateModal={() => setInitiateModalOpen(true)}
+          gravityMultiplier={gravityMultiplier}
+        />
+
+        {/* Section 5: The Flight Path (Vertical Roadmap with Glowing Pulsing Neon Tether) */}
+        <FlightPath
           onSelectEvent={(evt) => setSelectedEvent(evt)}
-          onOpenJoinModal={() => setJoinModalOpen(true)}
           gravityMultiplier={gravityMultiplier}
         />
 
-        {/* Interactive Anti-Gravity Chamber / Tech Lab */}
+        {/* Section 6: The Roster (Tactical Agent Select Screen with Tall Cards & Floating Cutouts) */}
+        <AgentRoster
+          gravityMultiplier={gravityMultiplier}
+        />
+
+        {/* Section 7: The Anti-Gravity Chamber / Tech Lab */}
         <GravitySandbox
           currentMode={gravityMode}
           setGravityMode={setGravityMode}
@@ -76,22 +91,22 @@ export default function App() {
         />
       </main>
 
-      {/* Visually Striking Footer heavily emphasizing Instagram */}
+      {/* Tactical Comms Footer & Instagram Nexus */}
       <SocialsFooter
-        onOpenJoinModal={() => setJoinModalOpen(true)}
+        onOpenInitiateModal={() => setInitiateModalOpen(true)}
         gravityMultiplier={gravityMultiplier}
       />
 
-      {/* Floating Quick Gravity Mode Indicator Pill at Bottom Left */}
+      {/* Floating Tactical Field Switcher Pill at Bottom Left */}
       <div className="fixed bottom-5 left-5 z-40 hidden sm:block">
         <button
           onClick={handleToggleGravity}
-          className="glass-panel px-3.5 py-2 rounded-xl border border-white/10 hover:border-cyan-400/40 text-xs font-mono text-slate-300 flex items-center gap-2.5 shadow-xl hover:bg-white/[0.08] transition-all cursor-pointer group"
-          title="Click to switch gravitational field"
+          className="glass-visor px-3.5 py-2 rounded-xl border border-white/10 hover:border-cyan-400/50 text-xs font-mono text-slate-300 flex items-center gap-2.5 shadow-xl hover:bg-white/[0.08] transition-all cursor-pointer group"
+          title="Click to alternate gravitational regime"
         >
           <Compass className="w-3.5 h-3.5 text-cyan-400 group-hover:rotate-90 transition-transform" />
-          <span>Field: <strong className="text-cyan-300 uppercase">{gravityMode}</strong></span>
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+          <span>FIELD: <strong className="text-cyan-300 uppercase">{gravityMode}</strong></span>
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
         </button>
       </div>
 
@@ -101,13 +116,13 @@ export default function App() {
         onClose={() => setSelectedEvent(null)}
         onOpenJoinModal={() => {
           setSelectedEvent(null);
-          setJoinModalOpen(true);
+          setInitiateModalOpen(true);
         }}
       />
 
       <JoinModal
-        isOpen={joinModalOpen}
-        onClose={() => setJoinModalOpen(false)}
+        isOpen={initiateModalOpen}
+        onClose={() => setInitiateModalOpen(false)}
       />
     </div>
   );
